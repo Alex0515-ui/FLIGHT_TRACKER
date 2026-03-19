@@ -17,7 +17,7 @@ class Subscription(models.Model):
         choices=TripType, 
         default=TripType.ONEWAY
     )
-    departure_date = models.DateField(null=True, blank=True)
+    departure_date = models.DateField()
     return_date = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)

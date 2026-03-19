@@ -7,3 +7,11 @@ class FlightSerializer(serializers.Serializer):
     type = serializers.CharField(required=False)
     departure_date = serializers.DateField(required=False)
     return_date = serializers.DateField(required=False)
+
+class FlightRangeSerializer(serializers.Serializer):
+    origin = serializers.CharField(max_length=3)
+    destination = serializers.CharField(max_length=3)
+    max_price = serializers.IntegerField()
+    start_date = serializers.DateField()
+    end_date = serializers.DateField()
+    return_date = serializers.DateField(required=False)

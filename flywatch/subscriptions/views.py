@@ -3,7 +3,6 @@ from .models import Subscription
 from .serializers import SubscriptionSerializer
 from rest_framework.permissions import IsAuthenticated
 
-
 class SubView(viewsets.ModelViewSet):
 
     queryset = Subscription.objects.all()
@@ -15,3 +14,6 @@ class SubView(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):  # Подставляем пользователя автоматический
         serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        return 
