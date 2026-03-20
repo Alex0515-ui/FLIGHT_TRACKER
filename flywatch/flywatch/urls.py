@@ -8,5 +8,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # Обновление токена
     path('api/', include('users.urls')), # Пока только пользователя зарегал
     path('api/', include('subscriptions.urls')),
-    path("api/", include('flights.urls'))
+    path("api/", include('flights.urls')),
+    path("api/", include("notifications.urls")),
 ]

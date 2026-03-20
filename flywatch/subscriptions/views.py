@@ -14,6 +14,3 @@ class SubView(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):  # Подставляем пользователя автоматический
         serializer.save(user=self.request.user)
-
-    def create(self, request, *args, **kwargs):
-        return 

@@ -1,3 +1,15 @@
 from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Notification
+from .seralizers import NotificationSerializer
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+
+class NotificationView(viewsets.ReadOnlyModelViewSet):
+    serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Notification.objects.filter(user=self.request.user)
+
+
