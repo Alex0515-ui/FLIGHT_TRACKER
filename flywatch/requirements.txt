@@ -1,0 +1,8 @@
+Redis
+celery
+Serpapi
+djangorestframework_simplejwt
+psycopg2-binary
+django
+djangorestframework
+django-filter

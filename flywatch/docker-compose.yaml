@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+  
+  db:
+    image: postgres:15
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  celery:
+    build: .
+    command: celery -A flywatch worker -l info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && python manage.py runserver"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  db-data:
+
+  

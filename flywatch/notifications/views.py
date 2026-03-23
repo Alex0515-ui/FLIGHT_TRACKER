@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Notification
-from .seralizers import NotificationSerializer
+from .serializers import NotificationSerializer
 from rest_framework.permissions import IsAuthenticated
 
 

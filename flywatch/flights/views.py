@@ -29,5 +29,7 @@ def get_flights_range(request):
     response = flight_service.search_flights_in_range(serializer.validated_data)
     return Response(response)
 
+
+
     
 
