@@ -1,13 +1,13 @@
 from rest_framework import viewsets
 from .models import Subscription
 from .serializers import SubscriptionSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 class SubView(viewsets.ModelViewSet):
 
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny] # Временно сделаю открытый доступ
 
     def get_queryset(self): # Чтобы пользователь не мог создавать подписку за другого
         return Subscription.objects.filter(user = self.request.user)

@@ -6,3 +6,4 @@ psycopg2-binary
 django
 djangorestframework
 django-filter
+python-dotenv

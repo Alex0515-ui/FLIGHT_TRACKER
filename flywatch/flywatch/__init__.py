@@ -1,2 +1,2 @@
-from celeryser import app as celery_app
+from flywatch.celeryser import app as celery_app
 __all__ = ('celery_app', )

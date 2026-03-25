@@ -14,20 +14,13 @@ def get_flight(request):
     return Response(response)
 
 @api_view(['GET'])
-def get_cheapest(request):
-    data = request.query_params
-    serializer = FlightSerializer(data=data)
-    serializer.is_valid(raise_exception=True)
-    response = flight_service.get_cheapest_flight(serializer.validated_data)
-    return Response(response)
-
-@api_view(['GET'])
 def get_flights_range(request):
     data = request.query_params
     serializer = FlightRangeSerializer(data=data)
     serializer.is_valid(raise_exception=True)
     response = flight_service.search_flights_in_range(serializer.validated_data)
     return Response(response)
+
 
 
 
