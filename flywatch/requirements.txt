@@ -7,3 +7,4 @@ django
 djangorestframework
 django-filter
 python-dotenv
+tenacity

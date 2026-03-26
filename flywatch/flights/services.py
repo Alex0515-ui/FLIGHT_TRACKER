@@ -3,8 +3,13 @@ from datetime import timedelta
 import os
 import logging
 from django.core.cache import cache
+from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
+from requests.exceptions import RequestException
+
+
 logger = logging.getLogger(__name__)
 API_URL = "https://serpapi.com/search?engine=google_flights"
+
 
 class FlightService:
 
@@ -12,8 +17,15 @@ class FlightService:
         self.url = API_URL
         self.api_key = os.environ.get("SECRET_API_KEY")
 
-
+    @retry(
+        stop=stop_after_attempt(4),
+        wait=wait_exponential(multiplier=1, min=2, max=10),
+        retry=retry_if_exception_type(RequestException),
+        before_sleep=before_sleep_log(logger, logging.INFO),
+        reraise=True
+    )
     def fetch_flight(self, origin, destination, departure_date, max_price, return_date=None):
+        
         key = f"flight:{origin}:{destination}:{str(departure_date)}:{max_price}:{return_date}"
         cached_data = cache.get(key)
 
@@ -36,11 +48,13 @@ class FlightService:
         if return_date:
             params["return_date"] = return_date
         
-        data = requests.get(self.url, params)
+        data = requests.get(self.url, params, timeout=10)
+        data.raise_for_status()  # Превращает ошибки 400-500 в RequestException
+
         response = data.json()
         cache.set(key, response, timeout=300)       # Сохраняем в кэш данные на 5 минут
         return response
-    
+        
 
     def search_flights_in_range(self, origin, destination, max_price, start_date, end_date, return_date=None):
         days_count = (end_date - start_date).days + 1
