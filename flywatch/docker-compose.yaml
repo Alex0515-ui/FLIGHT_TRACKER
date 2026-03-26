@@ -36,7 +36,8 @@ services:
     depends_on:
       - db
       - redis
-    
+    environment:
+      - PYTHONUNBUFFERED=1
   celery-beat:
     build: .
     command: celery -A flywatch beat -l info

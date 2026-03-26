@@ -6,7 +6,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-@shared_task
+@shared_task # Каждые 6 часов будет запускаться проверка подписок
 def check_flight_prices():
     logger.info("Задача запущена")
     subs = Subscription.objects.filter(is_active=True)
@@ -19,10 +19,12 @@ def check_flight_prices():
             sub.start_date, sub.end_date
         )
         logger.info(len(data))
+
         if len(data) == 0:
             continue
         cheapest_flight = data[0]
         logger.info("Данные найдены")
+
         if sub.last_notified_price == None:
             sub.last_notified_price = cheapest_flight["min_price"]
             Notification.objects.create(
@@ -42,6 +44,7 @@ def check_flight_prices():
 
         elif sub.last_notified_price > cheapest_flight["min_price"]:
             sub.last_notified_price = cheapest_flight["min_price"]
+            
             Notification.objects.create(
                 user=user, 
                 subscription=sub, 
@@ -50,6 +53,7 @@ def check_flight_prices():
                 destination=sub.destination,
                 flight_date=cheapest_flight["departure_date"]
             )
+
             sub.save()
             logger.info("Уведомление создано")
 

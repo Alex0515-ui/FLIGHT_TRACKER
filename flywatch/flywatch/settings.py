@@ -133,10 +133,20 @@ CELERY_BROKER_URL = "redis://redis:6379/0"
 
 CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
 CELERY_BEAT_SCHEDULE = {
     "check-flight-prices": {
         "task": "flights.tasks.check_flight_prices",
-        "schedule": timedelta(hours=6), # Для теста пока минута промежуток
+        "schedule": timedelta(hours=6), 
+    }
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "TIMEOUT": 300                  # Данные в кэш хранятся 5 минут
     }
 }
 

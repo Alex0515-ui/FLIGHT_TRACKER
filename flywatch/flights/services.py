@@ -2,7 +2,7 @@ import requests
 from datetime import timedelta
 import os
 import logging
-
+from django.core.cache import cache
 logger = logging.getLogger(__name__)
 API_URL = "https://serpapi.com/search?engine=google_flights"
 
@@ -14,12 +14,15 @@ class FlightService:
 
 
     def fetch_flight(self, origin, destination, departure_date, max_price, return_date=None):
-        if return_date is not None:
-            type = 1
-        else: 
-            type = 2
+        key = f"flight:{origin}:{destination}:{str(departure_date)}:{max_price}:{return_date}"
+        cached_data = cache.get(key)
 
-        data = requests.get(self.url, {
+        if cached_data:
+            print("Данные взяты из кэша", flush=True)
+            return cached_data
+        
+        type = 1 if return_date else 2
+        params = {
             "api_key": self.api_key,
             "departure_id": origin, 
             "arrival_id": destination, 
@@ -28,12 +31,20 @@ class FlightService:
             "type": type,
             "currency": "USD",
             "hl": "ru"
-        })
-        return data.json()
+        }
+
+        if return_date:
+            params["return_date"] = return_date
+        
+        data = requests.get(self.url, params)
+        response = data.json()
+        cache.set(key, response, timeout=300)       # Сохраняем в кэш данные на 5 минут
+        return response
     
 
     def search_flights_in_range(self, origin, destination, max_price, start_date, end_date, return_date=None):
         days_count = (end_date - start_date).days + 1
+        
         all_days = [(start_date + timedelta(days=x)).strftime("%Y-%m-%d") for x in  range(days_count)]
 
         results = []
