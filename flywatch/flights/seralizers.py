@@ -13,8 +13,8 @@ class FlightSerializer(serializers.Serializer):
         if departure and return_to:
             days_count = (return_to - departure).days + 1
 
-        if days_count <= 0:
-            raise serializers.ValidationError("Дата возвращения не может быть раньше даты вылета")
+            if days_count <= 0:
+                raise serializers.ValidationError("Дата возвращения не может быть раньше даты вылета")
         return data
     
     

@@ -51,7 +51,7 @@ def check_flight_prices():
                 price=cheapest_flight["min_price"], 
                 origin=sub.origin, 
                 destination=sub.destination,
-                flight_date=cheapest_flight["departure_date"]
+                flight_date=cheapest_flight["date"]
             )
 
             sub.save()

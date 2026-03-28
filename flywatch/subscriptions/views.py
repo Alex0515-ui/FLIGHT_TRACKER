@@ -7,7 +7,7 @@ class SubView(viewsets.ModelViewSet):
 
     queryset = Subscription.objects.all()
     serializer_class = SubscriptionSerializer
-    permission_classes = [AllowAny] # Временно сделаю открытый доступ
+    permission_classes = [IsAuthenticated] # Временно сделаю открытый доступ
 
     def get_queryset(self): # Чтобы пользователь не мог создавать подписку за другого
         return Subscription.objects.filter(user = self.request.user)
