@@ -1,5 +1,5 @@
 from django.test import TestCase
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 from flights.seralizers import FlightSerializer, FlightRangeSerializer
 
 # ТЕСТЫ НА ОБЫЧНЫЙ ПОИСК РЕЙСОВ

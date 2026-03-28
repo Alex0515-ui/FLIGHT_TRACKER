@@ -8,3 +8,4 @@ djangorestframework
 django-filter
 python-dotenv
 tenacity
+drf-spectacular
