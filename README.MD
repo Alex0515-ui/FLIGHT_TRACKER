@@ -1,4 +1,4 @@
-
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/alex0515-ui/flight_tracker)
 # FlyWatch API for monitoring flight prices and managing user subscriptions. Built with Django, Django Rest Framework (DRF), Celery, and Redis.
 
 ## Core Functionality
